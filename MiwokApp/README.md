@@ -15,8 +15,7 @@ Getting Started
 ---------------
 
 This sample uses the Gradle build system. To build this project, use the
-"gradlew build" command or use "Import Project" in Android Studio.
-ScreenShots
+"gradlew build" command or use "Import Project" in Android Studio.ScreenShots
 --------------
 
 - ![Screenshot](ScreenShot1.png)- ![Screenshot](ScreenShot2.png) -![Screenshot](ScreenShot3.png)- ![Screenshot](ScreenShot4.png)- ![Screenshot](ScreenShot5.png).
