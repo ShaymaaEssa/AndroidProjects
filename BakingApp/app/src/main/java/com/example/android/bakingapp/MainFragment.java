@@ -1,6 +1,7 @@
 package com.example.android.bakingapp;
 
 
+import android.content.Intent;
 import android.graphics.Movie;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -56,6 +58,17 @@ public class MainFragment extends Fragment {
         adapter = new RecipesItemsAdapter(getActivity(),recipesData);
         recipesDataListView.setAdapter(adapter);
 
+        recipesDataListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(),DetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(DetailActivity.selectedRecipeSteps, recipesData.get(position).getSteps());
+                intent.putExtra(DetailActivity.selectedRecipeStepsBundle,bundle);
+                startActivity(intent);
+            }
+        });
+
 
         getRecipesData();
 
@@ -78,7 +91,7 @@ public class MainFragment extends Fragment {
                             int id = Integer.parseInt(currentObject.getString("id"));
                             String name = currentObject.getString("name");
 
-                            List<Ingredients> ingredientsList = new ArrayList<Ingredients>();
+                            ArrayList<Ingredients> ingredientsList = new ArrayList<Ingredients>();
                             JSONArray ingredientsJsonData = currentObject.getJSONArray("ingredients");
                             for (int j=0; j<ingredientsJsonData.length();j++){
                                 JSONObject currentIngredientsObject = ingredientsJsonData.getJSONObject(i);
@@ -89,10 +102,10 @@ public class MainFragment extends Fragment {
                                 ingredientsList.add(ingredientItem);
                             }
 
-                            List<Steps> stepsList = new ArrayList<Steps>();
+                            ArrayList<Steps> stepsList = new ArrayList<Steps>();
                             JSONArray stepsJsonData = currentObject.getJSONArray("steps");
                             for (int j=0; j<stepsJsonData.length();j++){
-                                JSONObject currentStepObject = stepsJsonData.getJSONObject(i);
+                                JSONObject currentStepObject = stepsJsonData.getJSONObject(j);
                                 int stepsId = Integer.parseInt(currentStepObject.getString("id"));
                                 String shortDescription = currentStepObject.getString("shortDescription");
                                 String description = currentStepObject.getString("description");

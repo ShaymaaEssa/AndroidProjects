@@ -1,5 +1,8 @@
 package com.example.android.bakingapp.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,12 +13,12 @@ import java.util.List;
 public class RecipesData {
     int id;
     String name;
-    List<Ingredients> ingredients = new ArrayList<Ingredients>();
-    List<Steps> steps = new ArrayList<Steps>();
+    ArrayList<Ingredients> ingredients = new ArrayList<Ingredients>();
+    ArrayList<Steps> steps = new ArrayList<Steps>();
     int servings;
     String image;
 
-    public RecipesData(int id, String name, List<Ingredients> ingredients, List<Steps> steps, int servings, String image) {
+    public RecipesData(int id, String name, ArrayList<Ingredients> ingredients, ArrayList<Steps> steps, int servings, String image) {
         this.id = id;
         this.name = name;
         this.ingredients = ingredients;
@@ -32,11 +35,11 @@ public class RecipesData {
         return name;
     }
 
-    public List<Ingredients> getIngredients() {
+    public ArrayList<Ingredients> getIngredients() {
         return ingredients;
     }
 
-    public List<Steps> getSteps() {
+    public ArrayList<Steps> getSteps() {
         return steps;
     }
 
@@ -47,4 +50,6 @@ public class RecipesData {
     public String getImage() {
         return image;
     }
+
+
 }
