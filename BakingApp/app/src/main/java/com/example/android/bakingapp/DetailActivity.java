@@ -22,20 +22,6 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        //get selected recipe id
-        Bundle bundle = getIntent().getBundleExtra(selectedRecipeStepsBundle);
-        ArrayList<Steps> stepsList = bundle.getParcelableArrayList(selectedRecipeSteps);
-        Log.v("DetailFragment","the id is = "+ recipeNumber);
-
-        //send selected recipe id to detailfragment
-        DetailFragment detailFragment = (DetailFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_detailactivity_detailfragment);
-        detailFragment.setRecipeNumber(stepsList);
-
-
-
-
-
-
     }
 
 }

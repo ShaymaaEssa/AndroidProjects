@@ -1,7 +1,9 @@
 package com.example.android.bakingapp;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Movie;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.android.bakingapp.Model.Ingredients;
 import com.example.android.bakingapp.Model.RecipesData;
 import com.example.android.bakingapp.Model.Steps;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +37,7 @@ import java.util.List;
 import static android.support.v7.widget.AppCompatDrawableManager.get;
 
 
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -41,6 +45,7 @@ public class MainFragment extends Fragment {
 
     List<RecipesData>recipesData = new ArrayList<RecipesData>();
     final String Recipes_Data_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
+    SharedPreferences mPrefs;
 
     RecipesItemsAdapter adapter;
     ListView recipesDataListView;
@@ -54,25 +59,35 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main, container, false);
+
+        //Recipes listview
         recipesDataListView = (ListView) view.findViewById(R.id.listView_mainfragment_recipesitems);
         adapter = new RecipesItemsAdapter(getActivity(),recipesData);
         recipesDataListView.setAdapter(adapter);
 
+        //create shared preference to store recipe object
+        mPrefs = this.getActivity().getSharedPreferences(DetailFragment.SHARED_PREFERENCE,Context.MODE_PRIVATE);
+
         recipesDataListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                saveRecipeObjectInSharedPreference(recipesData.get(position));
                 Intent intent = new Intent(getActivity(),DetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList(DetailActivity.selectedRecipeSteps, recipesData.get(position).getSteps());
-                intent.putExtra(DetailActivity.selectedRecipeStepsBundle,bundle);
                 startActivity(intent);
             }
         });
-
-
         getRecipesData();
-
         return view;
+    }
+
+    //save recipe object in sharedpreference
+    //https://stackoverflow.com/questions/7145606/how-android-sharedpreferences-save-store-object
+    private void saveRecipeObjectInSharedPreference(RecipesData recipe) {
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(recipe);
+        prefsEditor.putString(DetailFragment.RECIPE_SHARED_PREFERENCE, json);
+        prefsEditor.commit();
     }
 
     private void getRecipesData() {
