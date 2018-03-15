@@ -73,6 +73,7 @@ public class MainFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 saveRecipeObjectInSharedPreference(recipesData.get(position));
 
+                //to update widget with the recipe ingredients
                 Intent intent = new Intent(RecipeAppWidget.ACTION_TEXT_CHANGED);
                 ArrayList<Ingredients> selectedRecipeIngredients = recipesData.get(position).getIngredients();
                 String ingrediantsText = recipesData.get(position).getName()+"\n \n";
@@ -82,6 +83,7 @@ public class MainFragment extends Fragment {
                 intent.putExtra("NewString", ingrediantsText);
                 getActivity().getApplicationContext().sendBroadcast(intent);
 
+                //to open the detail activity
                 Intent intent2 = new Intent(getActivity(),DetailActivity.class);
                 startActivity(intent2);
             }
