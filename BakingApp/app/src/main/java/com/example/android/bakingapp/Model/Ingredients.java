@@ -5,11 +5,11 @@ package com.example.android.bakingapp.Model;
  */
 
 public class Ingredients {
-    int quantity;
+    double quantity;
     String measure;
     String ingredient;
 
-    public Ingredients(int quantity, String measure, String ingredient) {
+    public Ingredients(double quantity, String measure, String ingredient) {
         this.quantity = quantity;
         this.measure = measure;
         this.ingredient = ingredient;
@@ -19,11 +19,16 @@ public class Ingredients {
         return ingredient;
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
     public String getMeasure() {
         return measure;
+    }
+
+    @Override
+    public String toString() {
+        return quantity +" " +measure +" "+ingredient;
     }
 }

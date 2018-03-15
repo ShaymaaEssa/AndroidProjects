@@ -72,8 +72,18 @@ public class MainFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 saveRecipeObjectInSharedPreference(recipesData.get(position));
-                Intent intent = new Intent(getActivity(),DetailActivity.class);
-                startActivity(intent);
+
+                Intent intent = new Intent(RecipeAppWidget.ACTION_TEXT_CHANGED);
+                ArrayList<Ingredients> selectedRecipeIngredients = recipesData.get(position).getIngredients();
+                String ingrediantsText = recipesData.get(position).getName()+"\n \n";
+                for (int i=0 ;i<selectedRecipeIngredients.size();i++){
+                    ingrediantsText += selectedRecipeIngredients.get(i).toString() +" \n";
+                }
+                intent.putExtra("NewString", ingrediantsText);
+                getActivity().getApplicationContext().sendBroadcast(intent);
+
+                Intent intent2 = new Intent(getActivity(),DetailActivity.class);
+                startActivity(intent2);
             }
         });
         getRecipesData();
@@ -109,8 +119,8 @@ public class MainFragment extends Fragment {
                             ArrayList<Ingredients> ingredientsList = new ArrayList<Ingredients>();
                             JSONArray ingredientsJsonData = currentObject.getJSONArray("ingredients");
                             for (int j=0; j<ingredientsJsonData.length();j++){
-                                JSONObject currentIngredientsObject = ingredientsJsonData.getJSONObject(i);
-                                int quantity = Integer.parseInt(currentIngredientsObject.getString("quantity"));
+                                JSONObject currentIngredientsObject = ingredientsJsonData.getJSONObject(j);
+                                double quantity = Double.parseDouble(currentIngredientsObject.getString("quantity"));
                                 String measure = currentIngredientsObject.getString("measure");
                                 String ingredient = currentIngredientsObject.getString("ingredient");
                                 Ingredients ingredientItem = new Ingredients(quantity,measure,ingredient);
